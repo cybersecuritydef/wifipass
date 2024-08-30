@@ -93,15 +93,5 @@ int main(){
 
     wlan_clear(h, ifaces, profiles);
 
-
-
-
-
-
-
-
-
-
-
 	return 0;
 }
