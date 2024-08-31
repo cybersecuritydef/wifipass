@@ -169,7 +169,7 @@ void wlan_clear(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_INFO_LI
 }
 
 
-int main(){
+int main(int argc, char **argv){
 	HANDLE h = NULL;
     wifi_info *wifi = NULL;
 
