@@ -10,7 +10,7 @@
 
 #define WLAN_PLAINTEXT_PSK 4
 
-static char *columns_name[] = {"SSID", "AUTH", "ENC", "KEY"};
+static const char *columns_name[] = {"SSID", "AUTH", "ENC", "KEY"};
 
 
 typedef struct _wifi_info{
