@@ -76,29 +76,29 @@ void print(const wifi_info *wifi){
 
 
 char *parse_file(LPWSTR xmlfile, const char *tag){
-    XMLDoc doc;
+    	XMLDoc doc;
 	XMLSearch search;
 	XMLNode* res = NULL;
 	char *xmldata = NULL;
 	char *value = NULL;
 	if(xmlfile != NULL){
-        memset(&search, '\0', sizeof(XMLSearch));
-        memset(&doc, '\0', sizeof(XMLDoc));
-        if((xmldata = (char*)calloc(wcslen(xmlfile) + 1, sizeof(char))) != NULL){
-            WideCharToMultiByte(CP_ACP, 0, xmlfile, -1, xmldata, wcslen(xmlfile), NULL, NULL);
-            XMLDoc_init(&doc);
-            XMLDoc_parse_buffer_DOM(C2SX(xmldata), C2SX(""), &doc);
-            XMLSearch_init_from_XPath(tag, &search);
-            if((res = XMLSearch_next(doc.nodes[doc.i_root], &search)) != NULL)
-                value = strdup(res->text);
-            XMLSearch_free(&search, 0);
-            XMLDoc_free(&doc);
-            free(xmldata);
-        }
-        else{
-            fprintf(stderr, "Error allocation memory!");
-            exit(EOF);
-        }
+        	memset(&search, '\0', sizeof(XMLSearch));
+        	memset(&doc, '\0', sizeof(XMLDoc));
+	        if((xmldata = (char*)calloc(wcslen(xmlfile) + 1, sizeof(char))) != NULL){
+	            WideCharToMultiByte(CP_ACP, 0, xmlfile, -1, xmldata, wcslen(xmlfile), NULL, NULL);
+	            XMLDoc_init(&doc);
+	            XMLDoc_parse_buffer_DOM(C2SX(xmldata), C2SX(""), &doc);
+	            XMLSearch_init_from_XPath(tag, &search);
+	            if((res = XMLSearch_next(doc.nodes[doc.i_root], &search)) != NULL)
+	                value = strdup(res->text);
+	            XMLSearch_free(&search, 0);
+	            XMLDoc_free(&doc);
+	            free(xmldata);
+	        }
+	        else{
+	            fprintf(stderr, "Error allocation memory!");
+	            exit(EOF);
+	        }
 	}
 	return value;
 }
@@ -171,32 +171,32 @@ void wlan_clear(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_INFO_LI
 
 int main(int argc, char **argv){
 	HANDLE h = NULL;
-    wifi_info *wifi = NULL;
+    	wifi_info *wifi = NULL;
 
 	WLAN_INTERFACE_INFO_LIST *ifaces = NULL;
 	WLAN_PROFILE_INFO_LIST *profiles = NULL;
 
 	if((h = wlan_init()) == NULL)
-        exit(EOF);
+        	exit(EOF);
 
-    if(wlan_list_interfaces(h, &ifaces) == EOF){
-        wlan_clear(h, NULL, NULL);
-        exit(EOF);
-    }
+	if(wlan_list_interfaces(h, &ifaces) == EOF){
+		wlan_clear(h, NULL, NULL);
+	        exit(EOF);
+	}
 
-    if(wlan_list_profiles(h, ifaces, &profiles) == EOF){
-        wlan_clear(h, ifaces, NULL);
-        exit(EOF);
-    }
+    	if(wlan_list_profiles(h, ifaces, &profiles) == EOF){
+        	wlan_clear(h, ifaces, NULL);
+        	exit(EOF);
+    	}
 
-    if(wlan_info_profiles(h, ifaces, profiles, &wifi) == EOF){
-        wlan_clear(h, ifaces, profiles);
-        exit(EOF);
-    }
+    	if(wlan_info_profiles(h, ifaces, profiles, &wifi) == EOF){
+        	wlan_clear(h, ifaces, profiles);
+        	exit(EOF);
+    	}
 
-    print(wifi);
-    clear_wifi_info(&wifi);
+    	print(wifi);
+    	clear_wifi_info(&wifi);
 
-    wlan_clear(h, ifaces, profiles);
-    return 0;
+    	wlan_clear(h, ifaces, profiles);
+    	return 0;
 }
