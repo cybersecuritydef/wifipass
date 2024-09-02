@@ -171,32 +171,32 @@ void wlan_clear(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_INFO_LI
 
 int main(int argc, char **argv){
 	HANDLE h = NULL;
-    	wifi_info *wifi = NULL;
+    wifi_info *wifi = NULL;
 
 	WLAN_INTERFACE_INFO_LIST *ifaces = NULL;
 	WLAN_PROFILE_INFO_LIST *profiles = NULL;
 
 	if((h = wlan_init()) == NULL)
-        	exit(EOF);
+		exit(EOF);
 
 	if(wlan_list_interfaces(h, &ifaces) == EOF){
 		wlan_clear(h, NULL, NULL);
-	        exit(EOF);
+		exit(EOF);
 	}
 
-    	if(wlan_list_profiles(h, ifaces, &profiles) == EOF){
-        	wlan_clear(h, ifaces, NULL);
-        	exit(EOF);
-    	}
+	if(wlan_list_profiles(h, ifaces, &profiles) == EOF){
+		wlan_clear(h, ifaces, NULL);
+		exit(EOF);
+	}
 
-    	if(wlan_info_profiles(h, ifaces, profiles, &wifi) == EOF){
-        	wlan_clear(h, ifaces, profiles);
-        	exit(EOF);
-    	}
+	if(wlan_info_profiles(h, ifaces, profiles, &wifi) == EOF){
+		wlan_clear(h, ifaces, profiles);
+		exit(EOF);
+	}
 
-    	print(wifi);
-    	clear_wifi_info(&wifi);
+	print(wifi);
+	clear_wifi_info(&wifi);
 
-    	wlan_clear(h, ifaces, profiles);
-    	return 0;
+	wlan_clear(h, ifaces, profiles);
+	return 0;
 }
