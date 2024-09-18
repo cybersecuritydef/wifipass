@@ -41,7 +41,7 @@ wifi_info *add_wifi_info(wifi_info *wifi, const char *ssid, const char *auth, co
 void clear_wifi_info(wifi_info **wifi){
     wifi_info *tmp = NULL;
     if(wifi != NULL && (*wifi) != NULL){
-        while((*wifi)->next != NULL){
+        while((*wifi) != NULL){
             tmp = (*wifi);
             (*wifi) = (*wifi)->next;
             free(tmp->ssid);
@@ -51,14 +51,7 @@ void clear_wifi_info(wifi_info **wifi){
             free(tmp);
             tmp = NULL;
         }
-        free((*wifi)->ssid);
-        free((*wifi)->auth);
-        free((*wifi)->enc);
-        free((*wifi)->key);
-        free((*wifi));
-        (*wifi) = NULL;
     }
-
 }
 
 
