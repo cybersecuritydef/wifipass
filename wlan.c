@@ -152,6 +152,7 @@ void wlan_clear(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_INFO_LI
     if(profiles != NULL){
         for(index = 0; index < ifaces->dwNumberOfItems; index++)
             WlanFreeMemory(&profiles[index]);
+        free(profiles);
     }
 
     if(ifaces != NULL)
