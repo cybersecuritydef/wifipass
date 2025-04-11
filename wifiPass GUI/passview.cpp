@@ -46,7 +46,6 @@ void PassView::onListClear(wxCommandEvent &event){
 
 void PassView::onAddInfo(wxCommandEvent &event){
     WifiInfo info;
-
     wxVector<WIFIDATA> data;
     wxVector<wxVariant> d;
     listView->DeleteAllItems();
