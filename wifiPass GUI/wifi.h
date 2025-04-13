@@ -23,7 +23,7 @@ class WifiInfo{
 
 public:
     WifiInfo(){}
-    virtual ~WifiInfo();
+    ~WifiInfo();
     bool init();
     wxVector<WIFIDATA> getInfo();
 
