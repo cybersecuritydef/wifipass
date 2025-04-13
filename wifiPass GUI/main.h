@@ -10,9 +10,6 @@
 #include "passview.h"
 #include "topmenu.h"
 
-
-wxDECLARE_EVENT(EVT_ADD_DATA, wxCommandEvent);
-
 class MainFrame: public wxFrame{
 
 public:
