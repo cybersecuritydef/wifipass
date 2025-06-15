@@ -1,37 +1,33 @@
 #ifndef TOPMENU_H
 #define TOPMENU_H
 
-#include <wx/menu.h>
-#include <wx/aboutdlg.h>
-#include <wx/filedlg.h>
+#include <QMenuBar>
+#include <QMenu>
+#include <QMessageBox>
 
-#include "passview.h"
+class TopMenu : public QMenuBar{
 
-#define VERSION_APP "1.0"
-
-wxDECLARE_EVENT(EVT_CLOSE_APP, wxCommandEvent);
-
-enum{
-    ID_TOP_MENU = 1004
-};
-
-class TopMenu : public wxMenuBar{
+    Q_OBJECT
 
 public:
-    TopMenu();
+    TopMenu(QWidget *parent = nullptr);
     virtual ~TopMenu(){}
-    void setDataView(PassView *passView);
-    void setIsSave(bool state);
+    void onSaveFile(bool state);
 
 private:
-    wxMenu *fileMenu = nullptr;
-    wxMenu *aboutMenu = nullptr;
-    PassView *pass = nullptr;
-    void onQuit(wxCommandEvent &event){ sendCloseEvent(); }
-    void onAbout(wxCommandEvent &event);
-    void onSaveAs(wxCommandEvent &event);
-    void sendCloseEvent();
-    DECLARE_EVENT_TABLE()
-};
+    QMenu *file = nullptr;
+    QAction *actQuit = nullptr;
+    QAction *actSave = nullptr;
+    QAction *actGetPass = nullptr;
+    QMenu *about = nullptr;
+    QAction *actAbout = nullptr;
 
+private slots:
+    void help();
+
+signals:
+    void appQuit();
+    void getPass();
+    void saveKey();
+};
 #endif // TOPMENU_H
