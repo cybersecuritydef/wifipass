@@ -126,7 +126,7 @@ int wlan_list_profiles(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_
 }
 
 
-int wlan_info_profiles(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_INFO_LIST *profiles, wifi_info **wifi){
+int wlan_info_profiles(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_INFO_LIST **profiles, wifi_info **wifi){
 	DWORD iface = 0;
 	DWORD iprofile = 0;
 	LPWSTR xmlprofile = NULL;
@@ -147,7 +147,7 @@ int wlan_info_profiles(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_
 }
 
 
-void wlan_clear(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_INFO_LIST *profiles){
+void wlan_clear(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_INFO_LIST **profiles){
     DWORD index = 0;
     if(profiles != NULL){
         for(index = 0; index < ifaces->dwNumberOfItems; index++)
