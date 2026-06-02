@@ -107,7 +107,7 @@ HANDLE wlan_init(void){
 
 
 int wlan_list_interfaces(HANDLE h, WLAN_INTERFACE_INFO_LIST **ifaces){
-	if(WlanEnumInterfaces(h, NULL, &(*ifaces)) == ERROR_SUCCESS)
+	if(WlanEnumInterfaces(h, NULL, ifaces) == ERROR_SUCCESS)
 		return ERROR_SUCCESS;
 	return EOF;
 }
