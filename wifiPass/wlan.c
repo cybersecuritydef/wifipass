@@ -132,12 +132,24 @@ int wlan_info_profiles(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_
 	LPWSTR xmlprofile = NULL;
 	DWORD flags = WLAN_PLAINTEXT_PSK;
 	DWORD access = 0;
+ char *ssid = NULL;
+ char *auth = NULL;
+ char *enc = NULL;
+ char *key = NULL;
 	if(ifaces != NULL && profiles != NULL){
 		for(iface = 0; iface < ifaces->dwNumberOfItems; iface++){
 			for(iprofile = 0; iprofile < profiles[iface].dwNumberOfItems; iprofile++){
 				flags = WLAN_PLAINTEXT_PSK;
 				WlanGetProfile(h, &ifaces->InterfaceInfo[iface].InterfaceGuid, profiles[iface].ProfileInfo[iprofile].strProfileName, NULL, &xmlprofile, &flags, &access);
-				(*wifi) = add_wifi_info((*wifi), parse_file(xmlprofile, "name"), parse_file(xmlprofile, "authentication"), parse_file(xmlprofile, "encryption"), parse_file(xmlprofile, "keyMaterial"));
+    ssid = parse_file(xmlprofile, "name");
+    auth = parse_file(xmlprofile, "authentication");
+    enc = parse_file(xmlprofile, "encryption");
+    key = parse_file(xmlprofile, "keyMaterial");
+				(*wifi) = add_wifi_info((*wifi), ssid, auth, enc, key);
+    free(ssid);
+    free(auth);
+    free(enc);
+    free(key);
 				WlanFreeMemory(xmlprofile);
 			}
 		}
