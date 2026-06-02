@@ -174,7 +174,7 @@ int main(int argc, char **argv){
 		exit(EOF);
 
 	if(wlan_list_interfaces(h, &ifaces) == EOF){
-		wlan_clear(h, NULL, NULL);
+		wlan_clear(h, ifaces, NULL);
 		exit(EOF);
 	}
 
