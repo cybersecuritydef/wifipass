@@ -113,10 +113,10 @@ int wlan_list_interfaces(HANDLE h, WLAN_INTERFACE_INFO_LIST **ifaces){
 }
 
 
-int wlan_list_profiles(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_INFO_LIST **profiles){
+int wlan_list_profiles(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_INFO_LIST ***profiles){
 	DWORD index = 0;
 	if(profiles != NULL){
-		if((*profiles = (WLAN_PROFILE_INFO_LIST*)calloc(ifaces->dwNumberOfItems, sizeof(WLAN_PROFILE_INFO_LIST))) != NULL){
+		if((*profiles = (WLAN_PROFILE_INFO_LIST**)calloc(ifaces->dwNumberOfItems, sizeof(WLAN_PROFILE_INFO_LIST*))) != NULL){
 			for(index = 0; index < ifaces->dwNumberOfItems; index++)
 				WlanGetProfileList(h, &ifaces->InterfaceInfo[index].InterfaceGuid, NULL, &profiles[index]);
 			return ERROR_SUCCESS;
@@ -168,7 +168,7 @@ int main(int argc, char **argv){
     wifi_info *wifi = NULL;
 
 	WLAN_INTERFACE_INFO_LIST *ifaces = NULL;
-	WLAN_PROFILE_INFO_LIST *profiles = NULL;
+	WLAN_PROFILE_INFO_LIST **profiles = NULL;
 
 	if((h = wlan_init()) == NULL)
 		exit(EOF);
