@@ -147,7 +147,9 @@ int wlan_info_profiles(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_
 	char *enc = NULL;
 	char *key = NULL;
 	if(ifaces != NULL && profiles != NULL && *profiles != NULL){
-		for(iface = 0; iface < ifaces->dwNumberOfItems; iface++){			
+		for(iface = 0; iface < ifaces->dwNumberOfItems; iface++){
+			if((*profiles)[iface] == NULL)
+				continue;
 			for(iprofile = 0; iprofile < (*profiles)[iface]->dwNumberOfItems; iprofile++){
 				flags = WLAN_PLAINTEXT_PSK;
 				xmlprofile = NULL;
@@ -175,8 +177,10 @@ int wlan_info_profiles(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_
 void wlan_clear(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_INFO_LIST **profiles){
     DWORD index = 0;
     if(profiles != NULL){
-        for(index = 0; index < ifaces->dwNumberOfItems; index++)
-            WlanFreeMemory(profiles[index]);
+        for(index = 0; index < ifaces->dwNumberOfItems; index++){
+			if(profiles[index] != NULL)
+				WlanFreeMemory(profiles[index]);	
+		}            
         free(profiles);
     }
 
