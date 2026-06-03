@@ -78,17 +78,22 @@ char *parse_file(LPWSTR xmlfile, const char *tag){
 	if(xmlfile != NULL){
         memset(&search, '\0', sizeof(XMLSearch));
         memset(&doc, '\0', sizeof(XMLDoc));
-		len = WideCharToMultiByte(CP_ACP, 0, xmlfile, -1, NULL, wcslen(xmlfile), NULL, NULL);
-		if((xmldata = (char*)calloc(len + 1, sizeof(char))) != NULL){
-			WideCharToMultiByte(CP_ACP, 0, xmlfile, -1, xmldata, len, NULL, NULL);
-			XMLDoc_init(&doc);
-			XMLDoc_parse_buffer_DOM(C2SX(xmldata), C2SX(""), &doc);
-			XMLSearch_init_from_XPath(tag, &search);
-			if((res = XMLSearch_next(doc.nodes[doc.i_root], &search)) != NULL)
-				value = strdup(res->text);
-			XMLSearch_free(&search, 0);
-			XMLDoc_free(&doc);
-			free(xmldata);
+		if((len = WideCharToMultiByte(CP_ACP, 0, xmlfile, -1, NULL, 0, NULL, NULL)) != 0){
+			if((xmldata = (char*)calloc(len + 1, sizeof(char))) != NULL){
+				WideCharToMultiByte(CP_ACP, 0, xmlfile, -1, xmldata, len, NULL, NULL);
+				XMLDoc_init(&doc);
+				XMLDoc_parse_buffer_DOM(C2SX(xmldata), C2SX(""), &doc);
+				XMLSearch_init_from_XPath(tag, &search);
+				if((res = XMLSearch_next(doc.nodes[doc.i_root], &search)) != NULL)
+					value = strdup(res->text);
+				XMLSearch_free(&search, 0);
+				XMLDoc_free(&doc);
+				free(xmldata);
+			}
+			else{
+				fprintf(stderr, "Error allocation memory!");
+				exit(EOF);
+			}
 		}
 		else{
 			fprintf(stderr, "Error allocation memory!");
@@ -143,10 +148,12 @@ int wlan_info_profiles(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_
 			for(iprofile = 0; iprofile < profiles[iface].dwNumberOfItems; iprofile++){
 				flags = WLAN_PLAINTEXT_PSK;
 				WlanGetProfile(h, &ifaces->InterfaceInfo[iface].InterfaceGuid, profiles[iface].ProfileInfo[iprofile].strProfileName, NULL, &xmlprofile, &flags, &access);
-    ssid = parse_file(xmlprofile, "name");
-    auth = parse_file(xmlprofile, "authentication");
-    enc = parse_file(xmlprofile, "encryption");
-    key = parse_file(xmlprofile, "keyMaterial");
+    			ssid = parse_file(xmlprofile, "name");
+    			auth = parse_file(xmlprofile, "authentication");
+    			enc = parse_file(xmlprofile, "encryption");
+    			key = parse_file(xmlprofile, "keyMaterial");
+				if(key == NULL)
+					key = "";
 				(*wifi) = add_wifi_info((*wifi), ssid, auth, enc, key);
     free(ssid);
     free(auth);
