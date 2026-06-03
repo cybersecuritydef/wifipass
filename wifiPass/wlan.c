@@ -134,35 +134,34 @@ int wlan_list_profiles(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_
 }
 
 
-int wlan_info_profiles(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_INFO_LIST **profiles, wifi_info **wifi){
+int wlan_info_profiles(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_INFO_LIST ***profiles, wifi_info **wifi){
 	DWORD iface = 0;
 	DWORD iprofile = 0;
 	LPWSTR xmlprofile = NULL;
 	DWORD flags = WLAN_PLAINTEXT_PSK;
 	DWORD access = 0;
- char *ssid = NULL;
- char *auth = NULL;
- char *enc = NULL;
- char *key = NULL;
-	if(ifaces != NULL && profiles != NULL){
-		for(iface = 0; iface < ifaces->dwNumberOfItems; iface++){
-			for(iprofile = 0; iprofile < profiles[iface].dwNumberOfItems; iprofile++){
+	char *ssid = NULL;
+	char *auth = NULL;
+	char *enc = NULL;
+	char *key = NULL;
+	if(ifaces != NULL && profiles != NULL && *profiles != NULL){
+		for(iface = 0; iface < ifaces->dwNumberOfItems; iface++){			
+			for(iprofile = 0; iprofile < (*profiles)[iface]->dwNumberOfItems; iprofile++){
 				flags = WLAN_PLAINTEXT_PSK;
-				WlanGetProfile(h, &ifaces->InterfaceInfo[iface].InterfaceGuid, profiles[iface].ProfileInfo[iprofile].strProfileName, NULL, &xmlprofile, &flags, &access);
-    			ssid = parse_file(xmlprofile, "name");
-    			auth = parse_file(xmlprofile, "authentication");
-    			enc = parse_file(xmlprofile, "encryption");
-    			key = parse_file(xmlprofile, "keyMaterial");				
-				(*wifi) = add_wifi_info((*wifi), ssid, auth, enc, key);
-				if(ssid != NULL)
-			    	free(ssid);
-				if(auth != NULL)
-			    	free(auth);
-				if(enc != NULL)
-			    	free(enc);
-				if(key != NULL)
-			    	free(key);
-				WlanFreeMemory(xmlprofile);
+				xmlprofile = NULL;
+				DWORD res = WlanGetProfile(h, &ifaces->InterfaceInfo[iface].InterfaceGuid, (*profiles)[iface]->ProfileInfo[iprofile].strProfileName, NULL, &xmlprofile, &flags, &access);				
+				if(res == ERROR_SUCCESS && xmlprofile != NULL){
+					ssid = parse_file(xmlprofile, "name");
+					auth = parse_file(xmlprofile, "authentication");
+					enc = parse_file(xmlprofile, "encryption");
+					key = parse_file(xmlprofile, "keyMaterial");
+					(*wifi) = add_wifi_info((*wifi), ssid, auth, enc, key);
+					if(ssid != NULL) free(ssid);
+					if(auth != NULL) free(auth);
+					if(enc != NULL)  free(enc);
+					if(key != NULL)  free(key);
+					WlanFreeMemory(xmlprofile);
+				}
 			}
 		}
 		return ERROR_SUCCESS;
@@ -207,7 +206,7 @@ int main(int argc, char **argv){
 		exit(EOF);
 	}
 
-	if(wlan_info_profiles(h, ifaces, profiles, &wifi) == EOF){
+	if(wlan_info_profiles(h, ifaces, &profiles, &wifi) == EOF){
 		wlan_clear(h, ifaces, profiles);
 		exit(EOF);
 	}
