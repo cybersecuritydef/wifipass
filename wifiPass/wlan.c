@@ -60,11 +60,11 @@ void clear_wifi_info(wifi_info **wifi){
 
 void print(const wifi_info *wifi){
     printf("=========================================================\n");
-    printf("# %-15s %-15s %-10s %10s #\n", columns_name[0], columns_name[1], columns_name[2], columns_name[3]);
+    printf("# %-25s %-15s %-10s %20s #\n", columns_name[0], columns_name[1], columns_name[2], columns_name[3]);
     printf("=========================================================\n");
     if(wifi != NULL){
         while(wifi != NULL){
-			printf("  %-15s %-15s %-10s %10s\n", wifi->ssid, wifi->auth, wifi->enc, wifi->key);
+			printf("  %-25s %-15s %-10s %20s\n", wifi->ssid, wifi->auth, wifi->enc, wifi->key);
             wifi = wifi->next;
         }
     }
