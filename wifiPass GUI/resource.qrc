@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>ico/wifi.ico</file>
-        <file>ico/title.ico</file>
-        <file>ico/refresh.ico</file>
-        <file>ico/quit.ico</file>
-    </qresource>
-</RCC>
