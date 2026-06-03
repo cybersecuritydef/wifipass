@@ -30,7 +30,9 @@ wifi_info *add_wifi_info(wifi_info *wifi, const char *ssid, const char *auth, co
             news->auth = strdup(auth);
             news->enc = strdup(enc);
 			if(key != NULL)
-            	news->key = strdup(key);
+            	news->key = strdup("NONE");
+			else
+				news->key = strdup(key);
             news->next = wifi;
             wifi = news;
         }
@@ -62,7 +64,7 @@ void print(const wifi_info *wifi){
     printf("=========================================================\n");
     if(wifi != NULL){
         while(wifi != NULL){
-            printf("  %-15s %-15s %-10s %10s\n", wifi->ssid, wifi->auth, wifi->enc, wifi->key);
+			printf("  %-15s %-15s %-10s %10s\n", wifi->ssid, wifi->auth, wifi->enc, wifi->key);
             wifi = wifi->next;
         }
     }
