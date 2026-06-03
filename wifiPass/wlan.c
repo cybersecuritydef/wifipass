@@ -24,12 +24,13 @@ typedef struct _wifi_info{
 
 wifi_info *add_wifi_info(wifi_info *wifi, const char *ssid, const char *auth, const char *enc, const char *key){
     wifi_info *news = NULL;
-    if(ssid != NULL && auth != NULL && enc != NULL && key != NULL){
+    if(ssid != NULL && auth != NULL && enc != NULL){
         if(((news) = (wifi_info*)calloc(1, sizeof(wifi_info))) != NULL){
             news->ssid = strdup(ssid);
             news->auth = strdup(auth);
             news->enc = strdup(enc);
-            news->key = strdup(key);
+			if(key != NULL)
+            	news->key = strdup(key);
             news->next = wifi;
             wifi = news;
         }
@@ -151,9 +152,7 @@ int wlan_info_profiles(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_
     			ssid = parse_file(xmlprofile, "name");
     			auth = parse_file(xmlprofile, "authentication");
     			enc = parse_file(xmlprofile, "encryption");
-    			key = parse_file(xmlprofile, "keyMaterial");
-				if(key == NULL)
-					key = "";
+    			key = parse_file(xmlprofile, "keyMaterial");				
 				(*wifi) = add_wifi_info((*wifi), ssid, auth, enc, key);
 				if(ssid != NULL)
 			    	free(ssid);
