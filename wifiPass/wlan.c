@@ -155,10 +155,14 @@ int wlan_info_profiles(HANDLE h, WLAN_INTERFACE_INFO_LIST *ifaces, WLAN_PROFILE_
 				if(key == NULL)
 					key = "";
 				(*wifi) = add_wifi_info((*wifi), ssid, auth, enc, key);
-    free(ssid);
-    free(auth);
-    free(enc);
-    free(key);
+				if(ssid != NULL)
+			    	free(ssid);
+				if(auth != NULL)
+			    	free(auth);
+				if(enc != NULL)
+			    	free(enc);
+				if(key != NULL)
+			    	free(key);
 				WlanFreeMemory(xmlprofile);
 			}
 		}
