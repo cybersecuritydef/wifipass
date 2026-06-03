@@ -74,11 +74,13 @@ char *parse_file(LPWSTR xmlfile, const char *tag){
 	XMLNode* res = NULL;
 	char *xmldata = NULL;
 	char *value = NULL;
+	int len = 0;
 	if(xmlfile != NULL){
         memset(&search, '\0', sizeof(XMLSearch));
         memset(&doc, '\0', sizeof(XMLDoc));
-		if((xmldata = (char*)calloc(wcslen(xmlfile) + 1, sizeof(char))) != NULL){
-			WideCharToMultiByte(CP_ACP, 0, xmlfile, -1, xmldata, wcslen(xmlfile), NULL, NULL);
+		len = WideCharToMultiByte(CP_ACP, 0, xmlfile, -1, NULL, wcslen(xmlfile), NULL, NULL);
+		if((xmldata = (char*)calloc(len + 1, sizeof(char))) != NULL){
+			WideCharToMultiByte(CP_ACP, 0, xmlfile, -1, xmldata, len, NULL, NULL);
 			XMLDoc_init(&doc);
 			XMLDoc_parse_buffer_DOM(C2SX(xmldata), C2SX(""), &doc);
 			XMLSearch_init_from_XPath(tag, &search);
