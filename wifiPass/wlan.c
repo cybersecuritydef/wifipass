@@ -29,8 +29,8 @@ wifi_info *add_wifi_info(wifi_info *wifi, const char *ssid, const char *auth, co
             news->ssid = strdup(ssid);
             news->auth = strdup(auth);
             news->enc = strdup(enc);
-			if(key != NULL)
-            	news->key = strdup("NONE");
+			if(key == NULL)
+            	news->key = strdup("<NONE>");
 			else
 				news->key = strdup(key);
             news->next = wifi;
